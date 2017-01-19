@@ -9,10 +9,27 @@ if(empty($_GET['produit']) && empty($_GET['idCategorie']))
 }
 elseif (empty ($_GET['produit']) && $_GET['idCategorie'])
 {
-    $sql = "SELECT produit.titre, categorie.nom 
-FROM produit
-		JOIN categorie ON categorie.id = produit.categorie_id
-WHERE categorie.id=1";
+    $maCat = $_GET['idCategorie'];
+    $sql = "SELECT produit.titre, produit.description 
+            FROM produit
+            JOIN categorie ON categorie.id = produit.categorie_id
+            WHERE categorie.id='$maCat'";
+}
+elseif ($_GET['produit'] && empty($_GET['idCategorie']))
+{
+    $monProd = $_GET['produit'];
+    $sql = "SELECT produit.titre, produit.description
+            FROM produit
+            WHERE produit.titre LIKE '%$monProd%'";
+}
+ else
+{
+    $monProd = $_GET['produit'];
+    $maCat = $_GET['idCategorie'];
+    $sql = "SELECT produit.titre, produit.description
+            FROM produit
+            JOIN categorie ON categorie.id = produit.categorie_id
+            WHERE categorie.id='$maCat' AND produit.titre LIKE '%$monProd%'";
 }
 
 // Execute req SQL
