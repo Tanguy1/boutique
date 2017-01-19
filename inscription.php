@@ -85,4 +85,31 @@
         }
         $requete = $pdo->query("DELETE FROM categorie WHERE nom = '$categorie'");
     }
+    ////////////////////////////////////////////////////////////////////////////
+    //AJOUTER UN PRODUIT
+    ////////////////////////////////////////////////////////////////////////////
+    if(isset($_POST['subProd']) && $_POST['subProd'] == "Ajouter le Produit")
+    {
+        $produit = $_POST['produit'];
+        $description = $_POST['description'];
+        $prix = $_POST['prix'];
+        $idCategorie = $_POST['idCategorie'];
+        $requete = $pdo->query("INSERT INTO produit(titre, description, prix, categorie_id)"
+                . "VALUES('$produit', '$description', '$prix', '$idCategorie') ");
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    //SUPPRIMER UN PRODUIT
+    ////////////////////////////////////////////////////////////////////////////    
+    if(isset($_POST['subProd']) && $_POST['subProd'] == "Supprimer le Produit")
+    {
+        $produit = $_POST['produit'];
+        $reponse = $pdo->query("SELECT titre FROM produit WHERE titre = '$produit'");
+        $monProd = $reponse->fetch();
+        if (strtolower($_POST['produit']) != strtolower($monProd['titre']))
+        {
+            $erreur = "Aucun produit ne correspond à votre sélection.";
+            return;
+        }
+        $requete = $pdo->query("DELETE FROM produit WHERE titre = '$produit'");
+    }
 ?>
